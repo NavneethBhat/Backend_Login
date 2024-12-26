@@ -19,6 +19,12 @@ router.post("/", async (req, res) => {
       return send(res, setErrorRes(RESPONSE.REQUIRED, "Password"));
     }
 
+    let userData = await teacherModel.findOne({
+      isactiveL: STATE.ACTIVE,
+      //   phone: username,
+      $or: [{ phone: username }, { email: username }],
+    });
+
     // let isExist = await teacherModel.aggregate([
     //   {
     //     $match: {
@@ -32,7 +38,7 @@ router.post("/", async (req, res) => {
       return send(res, setErrorRes(RESPONSE.ALREADY_EXISTS, "phone"));
     }
 
-    let isValidPhone = phone.toString().match(/^\+91\d{10}$/);
+    // let isValidPhone = phone.toString().match(/^\+91\d{10}$/);
 
     //     if (!isValidPhone) {
     //       return send(res, setErrorRes(RESPONSE.INVALID, "Phone"));
@@ -63,7 +69,7 @@ router.post("/", async (req, res) => {
     //       // req.body
     //     );
 
-    //     return send(res, RESPONSE.SUCCESS);
+    return send(res, RESPONSE.SUCCESS);
   } catch (error) {
     console.log(error);
     return send(res, RESPONSE.UNKNOWN_ERR);
