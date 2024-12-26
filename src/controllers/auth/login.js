@@ -6,6 +6,7 @@ import { send, setErrorRes } from "../../helper/responseHelper.js";
 import { STATE } from "../../config/constants.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 router.post("/", async (req, res) => {
   try {
@@ -26,6 +27,16 @@ router.post("/", async (req, res) => {
     });
 
     if (userData && (await bcrypt.compare(password, userData.password))) {
+      let token = jwt.sign(
+        {
+          id: userData._id,
+          teacher_name: userData.teacher_name,
+          phone: userData.phone,
+          email: userData.email,
+        },
+        process.env.SECRETKEY
+      );
+
       return send(res, RESPONSE.SUCCESS);
     } else {
       return send(res, setErrorRes(RESPONSE.INVALID, "Login Credential"));
