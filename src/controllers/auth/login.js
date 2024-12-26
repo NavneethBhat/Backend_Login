@@ -26,44 +26,10 @@ router.post("/", async (req, res) => {
     });
 
     if (userData && (await bcrypt.compare(password, userData.password))) {
+      return send(res, RESPONSE.SUCCESS);
+    } else {
+      return send(res, setErrorRes(RESPONSE.INVALID, "Login Credential"));
     }
-
-    if (isExist.length > 0) {
-      return send(res, setErrorRes(RESPONSE.ALREADY_EXISTS, "phone"));
-    }
-
-    // let isValidPhone = phone.toString().match(/^\+91\d{10}$/);
-
-    //     if (!isValidPhone) {
-    //       return send(res, setErrorRes(RESPONSE.INVALID, "Phone"));
-    //     }
-
-    //     let isValidPassword = password
-    //       .toString()
-    //       .match(
-    //         /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-    //       );
-
-    //     if (!isValidPassword) {
-    //       return send(res, setErrorRes(RESPONSE.INVALID, "Password pattern"));
-    //     }
-
-    //     let encryptedPass = await bcrypt.hash(
-    //       password,
-    //       Number(process.env.SALTROUND)
-    //     );
-
-    //     teacherModel.create(
-    //       {
-    //         teacher_name: teacher_name,
-    //         phone: phone,
-    //         email: email,
-    //         password: encryptedPass,
-    //       }
-    //       // req.body
-    //     );
-
-    return send(res, RESPONSE.SUCCESS);
   } catch (error) {
     console.log(error);
     return send(res, RESPONSE.UNKNOWN_ERR);
