@@ -25,14 +25,8 @@ router.post("/", async (req, res) => {
       $or: [{ phone: username }, { email: username }],
     });
 
-    // let isExist = await teacherModel.aggregate([
-    //   {
-    //     $match: {
-    //       phone: phone,
-    //       isactive: STATE.ACTIVE,
-    //     },
-    //   },
-    // ]);
+    if (userData && (await bcrypt.compare(password, userData.password))) {
+    }
 
     if (isExist.length > 0) {
       return send(res, setErrorRes(RESPONSE.ALREADY_EXISTS, "phone"));
