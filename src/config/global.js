@@ -29,6 +29,10 @@ export const RESPONSE = {
     code: 205,
     message: "Access Denied",
   },
+  UNAUTHORIZED: {
+    code: 206,
+    message: "Unauthorized Request",
+  },
 };
 
 // export default RESPONSE;
