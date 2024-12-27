@@ -11,7 +11,7 @@ router.post("/", authenticate, async (req, res) => {
   try {
     // console.log()
 
-    if (req.user.role === ROLE.TEACHER) {
+    if (req.user.role != ROLE.TEACHER) {
       return send(res, RESPONSE.UNAUTHORIZED);
     }
 
