@@ -8,11 +8,14 @@ import { authenticate } from "../middlewares/authenticate.js";
 
 router.get("/", authenticate, async (req, res) => {
   try {
-    let teacher_id = req.user.id;
-
     let student_id = req.query.id;
     let rollno = req.query.rollno;
     let query = {};
+
+    let teacher_id = req.user.id;
+    // query.teacher_id = req.user.id;
+
+    query.$expr = { $eq: ["$teacher_id", { $toObjectId: teacher_id }] };
     query.isactive = STATE.ACTIVE;
     rollno != undefined ? (query.rollno = rollno) : "";
 
