@@ -19,12 +19,15 @@ router.post("/", async (req, res) => {
     if (!password || password == undefined) {
       return send(res, setErrorRes(RESPONSE.REQUIRED, "Password"));
     }
+    console.log(password);
 
     let userData = await teacherModel.findOne({
-      isactiveL: STATE.ACTIVE,
+      isactive: STATE.ACTIVE,
       //   phone: username,
       $or: [{ phone: username }, { email: username }],
     });
+
+    // console.log(userData);
 
     if (userData && (await bcrypt.compare(password, userData.password))) {
       let token = jwt.sign(
@@ -37,7 +40,7 @@ router.post("/", async (req, res) => {
         process.env.SECRETKEY
       );
 
-      return send(res, RESPONSE.SUCCESS);
+      return send(res, RESPONSE.SUCCESS, token);
     } else {
       return send(res, setErrorRes(RESPONSE.INVALID, "Login Credential"));
     }
