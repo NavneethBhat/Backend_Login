@@ -4,9 +4,12 @@ import studentModel from "../../models/studentModel.js";
 import { RESPONSE } from "../../config/global.js";
 import { send, setErrorRes } from "../../helper/responseHelper.js";
 import { STATE } from "../../config/constants.js";
+import { authenticate } from "../middlewares/authenticate.js";
 
-router.get("/", async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
+    let teacher_id = req.user.id;
+
     let student_id = req.query.id;
     let rollno = req.query.rollno;
     let query = {};
